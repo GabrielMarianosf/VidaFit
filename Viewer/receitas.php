@@ -139,7 +139,6 @@
 
         //Receber o número da página
         $pagina_atual = filter_input(INPUT_GET,'pagina', FILTER_SANITIZE_NUMBER_INT);	
-        echo "<progress value= '$array[valorAtual]' max= '$array[valorAlvo]' ></progress>";	
 		$pagina = (!empty($pagina_atual)) ? $pagina_atual : 1;
 		
 		//Setar a quantidade de itens por pagina
