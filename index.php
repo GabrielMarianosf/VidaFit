@@ -32,49 +32,101 @@
             <a href="Viewer/contato.php" class="hvr-bounce-to-left botao"><i class="fa fa-phone hvr-icon"></i> Contato</a>
     </div>
     <?php
-        session_start();
-        if(isset($_SESSION['logado'])){
-            echo '<div class="user-log"> <button href="" class="hvr-rectangle-out botao">Editar Perfil</button></div>';
+        $_SESSION['Logado'] = null;
+        $_SESSION['id'] = null;
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_cache_expire(60);
+            session_start();
+            //session_destroy();
+          }
+          
+        if( isset($_SESSION['Logado'])  ){
+            echo '
+            <div class="user-logg"> 
+            <a href="Viewer/editar_perfil.php" class="hvr-icon-forward botao">
+            Editar Perfil
+            <i class="fa fa-chevron-circle-right hvr-icon"></i>
+            </a>
+            <a href="Viewer/sair.php" class="hvr-skew-forward botao">
+            Sair/Deslogar
+            </a>
+            </div>';
         }else{
             echo '<div class="user-log">Já é cadastrado? <a id="login" class="hvr-radial-out botao">
-            Efetue Login</a> É novo por aqui? <a href="" class="hvr-shutter-out-vertical botao">Cadastre-se !</a></div>';
+            <i class="fa fa-arrow-circle-o-up hvr-icon"></i> Efetue Login</a> É novo por aqui? <a id="cadastro" class="hvr-shutter-out-vertical botao"><i class="fa fa-plus-circle hvr-icon"></i> Cadastre-se !</a></div>';
         }
     ?> 
     
 </div>
-        <div id="modal" class="container-modal">
+        <div id="modal-login" class="container-modal">
             <div class="modal-conteudo">
                 <button class="fechar-modal">&KHcy;</button>
                 <h1>Login</h1>
                 <div class="modal-form">
-                <form action="" method="POST">
-                    <input class="input" type="text" placeholder="Digite seu E-mail" style="width: 300px;"/><br/><br/><br/>
-                    <input class="input" type="password" placeholder="Digite sua Senha" style="width: 300px;"/><br/><br/><br/>
+                <form action="Controller/proc_login.php" method="POST">
+                    <input class="input" id="email" name="email" type="email" placeholder="Digite seu E-mail" style="width: 300px;"/><br/><br/><br/>
+                    <input class="input" id="senha" name="senha" type="password" placeholder="Digite sua Senha" style="width: 300px;"/><br/><br/><br/>
                     <input class="input" type="submit" value="Entrar" style="position: absolute; left: 35%; padding: 15px; cursor: pointer" />
+                </form>
+                </div>
+            </div>
+        </div>
+        <div id="modal-cadastro" class="container-modal">
+            <div class="modal-conteudo">
+                <button class="fechar-modal">&KHcy;</button>
+                <h1>Cadastre-se</h1>
+                <div class="modal-form-cad">
+                <form action="Controller/proc_cadastro.php" method="POST">
+                    <input class="input" type="text" id="nome" name="nome" style="width: 300px;" placeholder="Digite seu Nome" /><br/><br/>
+                    <input class="input" type="text" id="sobrenome" name="sobrenome" style="width: 300px;" placeholder="Digite seu Sobrenome" /><br/><br/>
+                    <input class="input" type="text" id="email" name="email" style="width: 300px;" placeholder="Digite seu E-mail" /><br/><br/>
+                    <input class="input" type="password" id="senha" name="senha" style="width: 300px;" placeholder="Digite uma Senha" /><br/><br/>
+                    <input class="input" type="password" id="senha2" style="width: 300px;" placeholder="Repita a Senha" />
+                    <input class="input-green" type="submit" value="Cadastrar" style="position: absolute; top: 122%; left: 8%; padding: 15px; cursor: pointer" />
+                    <input class="input-red" type="reset" value="Limpar" style="position: absolute; top: 122%; left: 60%; padding: 15px; cursor: pointer" />
                 </form>
                 </div>
             </div>
         </div>
         <script>
             const login = document.getElementById('login');
-            login.addEventListener('click', () => iniciaModal('modal'))
+            login.addEventListener('click', () => iniciaModal('modal-login'))
+            const cadastro = document.getElementById('cadastro');
+            cadastro.addEventListener('click', () => iniciaModal('modal-cadastro'))
         </script>
 
     <div class="conteudo">
-        <h1>Receitas</h1>
+        <h1>7 Motivos para Levar uma VidaFit</h1>
+        <p>Existem algumas maneiras de facilitar o processo de levar uma vida com mais qualidade no geral, com o resultado de transformar não apenas o seu corpo, mas também a mente, e colher todos os benefícios que vem daí. E vamos te ajudar com algumas dicas para não abandonar essa resolução e terminar 2017 ainda melhor do que começou!</p>
+        <p style="font-weight: bolder; font-size:30px">1. Tome a atitude de mudar</p>
+        <p>Para começar, é preciso tomar a atitude de mudar seu estilo de vida e trabalhar sua determinação para não desistir no meio do caminho. Como dissemos, é muito comum que as pessoas percam o mesmo pique do começo do ano e em poucos meses acabem voltando a tudo que faziam antes. Por isso, é importante traçar um plano de como pretende agir para facilitar a adaptação.</p>
+        <p style="font-weight: bolder; font-size:30px">2. Defina seus objetivos</p>
+        <p>Uma das melhores formas de se manter dentro do plano estabelecido é através da definição de objetivos claros e acessíveis. Não adiantar apenas estipular algo vago como apenas “ser mais saudável” ou uma meta pouco possível como “perder 50 quilos em 2017”. Definições assim costumam somente aumentar as chances de frustração e desistência.
 
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean auctor nunc ex. Praesent sed viverra mauris. Nulla rutrum eu ipsum in condimentum. Donec fringilla aliquam fringilla. Nunc facilisis faucibus ligula, eget dapibus urna cursus in. Nulla facilisi. Vestibulum tristique rutrum interdum. Duis ut malesuada arcu. Aliquam ultricies sapien id odio cursus, nec tincidunt turpis pharetra. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam non nulla at est feugiat hendrerit vitae at ipsum.
+Então pare e pense bem no que deseja: perder 10 ou até 20 quilos em um ano é mais palpável, por exemplo, assim como diminuir medidas ou alcançar 10 quilômetros de corrida.</p>
+        <p style="font-weight: bolder; font-size:30px">3. Cuide da alimentação</p>
+        <p>De pouco adianta praticar exercícios sem fim se não prestar atenção também no que está comendo. Quem faz isso acaba vendo pouco ou nenhum resultado no corpo e também pode acabar desmotivado para a sequência do ano. Cada corpo é diferente, então conhecer o seu é fundamental para saber que tipos de alimento funcionam melhor ou não – ou precisam ser consumidos com muita moderação.
 
-Nam maximus augue sit amet eros scelerisque, et consectetur nisi iaculis. Morbi sed nisi pretium, cursus erat sed, tincidunt tellus. Suspendisse consectetur faucibus interdum. Aenean ut purus a ligula commodo maximus ut non massa. Maecenas mattis purus neque, eu malesuada nunc feugiat vitae. Curabitur auctor, diam in rutrum venenatis, magna dui eleifend lacus, nec suscipit lectus nulla at nisi. Donec faucibus pellentesque fringilla. Donec cursus luctus bibendum. Nullam feugiat nisl nulla, ac efficitur libero pulvinar sed. Nulla id tristique dolor, sed gravida nunc. Suspendisse vestibulum, dui in elementum convallis, leo justo cursus nibh, vel accumsan nisl libero at massa. Integer vitae ornare elit. Vivamus a laoreet ipsum, at tempus lectus.
+Existem diversos protocolos alimentares distintos que funcionam melhor para uns do que para outros, então aprenda e teste qual é melhor para você. Ah, e não deixe de consultar um nutricionista.</p>
+        <p style="font-weight: bolder; font-size:30px">4. Deixe o estresse de lado</p>
+        <p>A rotina de trabalho corrida que a maioria das pessoas vive hoje em dia costuma ser muito estressante. E o estresse é um grande inimigo da qualidade de vida: pode levar a hábitos alimentares ruins, sedentarismo e também a algumas doenças de fundo emocional. Ou seja, exatamente o oposto de tudo que você quer. Então é muito importante administrar melhor suas tarefas em casa e no escritório e tentar fazer de tudo para não se deixar dominar pelo estresse. Começar a caminhar, meditar ou a praticar yoga, por exemplo, é uma excelente solução para quem tem dificuldade em se manter calmo e zen ao longo do dia.</p>
+        <p style="font-weight: bolder; font-size:30px">5. Descubra o seu esporte</p>
+        <p>Nem todo mundo tem os mesmos gostos e vê o corpo reagir da mesma forma. Então de nada adianta seguir o amigo que é fã de musculação se você não tem a mesma paixão pelo assunto e não suporta frequentar uma academia.
 
-Proin ex neque, viverra id ullamcorper in, scelerisque at erat. Etiam eget finibus enim. Sed convallis magna eu nulla pharetra aliquam sit amet sed erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam blandit id purus quis mattis. Nullam eu imperdiet odio. Sed scelerisque ante eu quam porta eleifend. Morbi leo arcu, tempor sed est sit amet, ornare ornare eros. Suspendisse id metus ante. Sed vitae dui lobortis, dapibus libero at, tempor nulla. Sed in elit a augue auctor sollicitudin sed vel nibh. Suspendisse vitae lacus suscipit mi sodales consectetur.
+Sua melhor opção pode ser a corrida, a natação, o ciclismo, uma arte marcial… não faltam opções de atividades físicas disponíveis para todas as tribos.
 
-Quisque porta tortor urna, at pretium elit maximus eu. Ut sagittis consectetur nisi, id accumsan ipsum volutpat et. Phasellus quis velit nisi. Morbi suscipit sapien velit, et aliquet nisi aliquet id. Etiam non nibh dictum, interdum velit in, dictum nunc. Sed sapien urna, ultricies et feugiat et, mattis eu risus. Quisque pulvinar risus quis nisi pretium luctus. Suspendisse non tortor ultrices, aliquam elit vel, accumsan ipsum. Aliquam suscipit quam a ante consequat laoreet. Mauris rhoncus bibendum consectetur. Cras vestibulum dui et lectus feugiat pharetra. In viverra libero in semper fringilla.
+Se você ainda não tem uma ideia exata do que prefere, também pode ir testando algumas até achar a sua favorita.</p>
+        <p style="font-weight: bolder; font-size:30px">6. Mantenha-se motivado</p>
+        <p>Manter uma rotina de restrição a inúmeras tentações e coisas de que gostamos é sempre difícil. Por isso muita gente perde a motivação ao longo do ano e retorna aos velhos hábitos. Mas, há formas acessíveis de manter-se motivado, como contar com amigos que tenham os mesmos objetivos ou procurar grupos de afinidade pela internet. A melhor delas é ver evolução no que está fazendo.</p>
+        <p style="font-weight: bolder; font-size:30px">7. Acompanhe sua evolução</p>
+        <p>Com o avanço tecnológico, existem sites, aplicativos e dispositivos (como uma Smartband, por exemplo) que o ajudam a manter controle dos seus resultados e outros dados. E ao ter real noção do progresso que está tendo, fica muito mais fácil de seguir animado com a sua vida saudável. Com uma pulseira inteligente – como a Smartband TCD1 da On Me – você pode acompanhar todo o seu desempenho através de informações como calorias perdidas, quilômetros percorridos e passos dados. Ela também te ajuda a analisar a qualidade do sono e também a se organizar melhor no trabalho, dois fatores importantes para quem quer melhorar a vida e ser mais saudável.</p>
+        <p></p>
+        <p></p>
 
-Donec turpis justo, vestibulum sit amet bibendum eu, iaculis sed mi. Nulla nec sollicitudin nulla. Suspendisse nec sem sit amet ante porttitor vehicula a vel sem. Praesent pellentesque molestie nunc, nec varius elit tempus vitae. Aenean tincidunt pharetra libero quis placerat. Sed dapibus est dignissim tellus pellentesque semper. Aliquam in velit id leo varius convallis. In hac habitasse platea dictumst. Nunc ut eros hendrerit, mollis lectus nec, lobortis augue. Vivamus fringilla enim a gravida sollicitudin. Nam at diam vitae dolor tempus varius. Integer ligula ipsum, commodo in purus eu, suscipit aliquet magna. Sed tristique velit sed mollis egestas. Praesent tincidunt sem malesuada pharetra euismod. Ut enim augue, fringilla vestibulum magna ac, pharetra euismod sem.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean auctor nunc ex. Praesent sed viverra mauris. Nulla rutrum eu ipsum in condimentum. Donec fringilla aliquam fringilla. Nunc facilisis faucibus ligula, eget dapibus urna cursus in. Nulla facilisi. Vestibulum tristique rutrum interdum. Duis ut malesuada arcu. Aliquam ultricies sapien id odio cursus, nec tincidunt turpis pharetra. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam non nulla at est feugiat hendrerit vitae at ipsum.
+
     </div>
 
-    <div class="rodape">
+    <div class="rodape" style="top:280%; ">
         <div class="img-logo2"></div>
         <div class="txt-rodape"><p>&copy; VidaFit ltda. CNPJ: 12.345.678/0000-00 Av. Sandu Norte, 50, Brasilia-DF, 72727-722, vidafit@fit.com &nbsp; &phone; +55 61 1234-1234   </p></div>
         <div class="redes-sociais">

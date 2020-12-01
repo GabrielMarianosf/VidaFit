@@ -24,7 +24,12 @@
             <a href="contato.php" class="hvr-bounce-to-left botao"><i class="fa fa-phone hvr-icon"></i> Contato</a>
         </div>
         <?php
-        session_start();
+        if(isset($_SESSION['msg'])){
+			echo $_SESSION['msg'];
+			unset($_SESSION['msg']);
+            $_SESSION['Logado'] = null;
+            $_SESSION['id'] = null;
+        }
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_cache_expire(60);
             session_start();
@@ -34,7 +39,7 @@
         if( isset($_SESSION['Logado'])  ){
             echo '
             <div class="user-logg"> 
-            <a href="editar_perfil.php" class="hvr-icon-forward botao">
+            <a href="#" class="hvr-icon-forward botao">
             Editar Perfil
             <i class="fa fa-chevron-circle-right hvr-icon"></i>
             </a>
@@ -100,56 +105,10 @@
 		}
         
         include_once("../Model/conexao.php");
-        $pagina_atual = filter_input(INPUT_GET,'pagina', FILTER_SANITIZE_NUMBER_INT);		
-		$pagina = (!empty($pagina_atual)) ? $pagina_atual : 1;
-		
-		//Setar a quantidade de itens por pagina
-		$qnt_result_pg = 3;
-		
-		//calcular o inicio visualização
-		$inicio = ($qnt_result_pg * $pagina) - $qnt_result_pg;
-        //Paginção - Somar a quantidade de usuários
-		$result_pg = "SELECT COUNT(id) AS num_result FROM receitas";
-		$resultado_pg = mysqli_query($conexao, $result_pg);
-		$row_pg = mysqli_fetch_assoc($resultado_pg);
-		//echo $row_pg['num_result'];
-		//Quantidade de pagina 
-		$quantidade_pg = ceil($row_pg['num_result'] / $qnt_result_pg);
-		
-		//Limitar os link antes depois
-        
-        $max_links = 2;
-		echo "<div class='paginacao'><a class='botao' href='receitas.php?pagina=1'>Primeira</a> ";
-		
-		for($pag_ant = $pagina - $max_links; $pag_ant <= $pagina - 1; $pag_ant++){
-			if($pag_ant >= 1){
-				echo "<a class='botao' href='receitas.php?pagina=$pag_ant'>$pag_ant</a> ";
-			}
-		}
-			
-		echo " <a class='atual botao'>$pagina</a> ";
-		
-		for($pag_dep = $pagina + 1; $pag_dep <= $pagina + $max_links; $pag_dep++){
-			if($pag_dep <= $quantidade_pg){
-				echo "<a class='botao' href='receitas.php?pagina=$pag_dep'>$pag_dep</a> ";
-			}
-		}
-		
-		echo "<a class='botao' href='receitas.php?pagina=$quantidade_pg'>Ultima</a> </div>";
-
-        //Receber o número da página
-        $pagina_atual = filter_input(INPUT_GET,'pagina', FILTER_SANITIZE_NUMBER_INT);	
-        echo "<progress value= '$array[valorAtual]' max= '$array[valorAlvo]' ></progress>";	
-		$pagina = (!empty($pagina_atual)) ? $pagina_atual : 1;
-		
-		//Setar a quantidade de itens por pagina
-		$qnt_result_pg = 3;
-		
-		//calcular o inicio visualização
-		$inicio = ($qnt_result_pg * $pagina) - $qnt_result_pg;
-        
-            $sql = "SELECT * FROM receitas LIMIT $inicio, $qnt_result_pg";
+            $busca = filter_input(INPUT_POST,'busca', FILTER_SANITIZE_STRING);
+            $sql = "SELECT * FROM receitas  where titulo LIKE '%$busca%'";
             $resultado = mysqli_query($conexao, $sql);
+            if(!empty($resultado)){
             while ($row = mysqli_fetch_assoc($resultado)) {
                 echo "
                     <div class='result'>
@@ -166,15 +125,17 @@
                             
                         </tr>
                         <tr>
-                            <td class='link_receita'><a class='link_receita' style='position:relative; top:0%; left:20%' href='ler_receita.php?id=" . $row['id'] . "'>Ler Receita...</a></td>
+                            <td class='link_receita'><a class='link_receita' style='position:relative; top:0%; left:20%' href='editar_bancas.php?id=" . $row['id'] . "'>Ler Notícia...</a></td>
                         </tr>
                     </table>
                     </div>
-                    
+                    <br/>
                     ";
             }
-            //<td><span class='glyphicon glyphicon-remove'></span><a class='btn btn-danger delete-object' href='deletar_banca.php?box=" . $row[''] . "'>Deletar</a></td>
-?>
+        }else{
+            echo " <script>alert('Não foi encontrado nenhuma banca');</script> ";
+        }
+        ?>
         </div>
     <div class="rodape">
         <div class="img-logo2"></div>
@@ -191,8 +152,5 @@
             </a>
         </div>
     </div>
-    
-    
-
 </body>
 </html>
